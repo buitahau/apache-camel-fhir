@@ -1,0 +1,18 @@
+server:
+  port: 8081
+application:
+  fhir:
+    server-url: http://localhost:8080/fhir/hapi
+    version: R4
+    input: classPath:data/hl7v2.patient
+
+fhirVersion: R4
+serverUrl: http://localhost:8080/fhir/hapi
+camel:
+  component:
+    servlet:
+      mapping:
+        context-path: /camel/*
+  dataformat:
+    jackson:
+      auto-discover-object-mapper: true
