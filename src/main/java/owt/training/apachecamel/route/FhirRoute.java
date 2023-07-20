@@ -12,7 +12,8 @@ public class FhirRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("file:/home/owt-hau/work/tmp?fileName=hl7v2.patient")
+        from("file:{{application.fhir.input}}")
+                .messageHistory()
                 .routeId("read-fhir-patient-data")
                 .log("Converting ${file:name}.")
                 // unmarshall file to hl7 message
@@ -30,17 +31,10 @@ public class FhirRoute extends RouteBuilder {
                     patient.setId(patientId);
                     exchange.getIn().setBody(patient);
                 })
-//                // marshall to JSON for logging
-                .marshal().fhirJson("{{fhirVersion}}")
+//                // marshall to JSON
+                .marshal().fhirJson("{{application.fhir.version}}")
                 .convertBodyTo(String.class)
                 .log("Inserting Patient: ${body}")
-//                .to("log:foo"); // ok
-
-                // create Patient in our FHIR server
-//                .to("fhir://create/resource?inBody=resourceAsString&serverUrl={{serverUrl}}/Patient&fhirVersion={{fhirVersion}}")
-                .to("fhir:{{serverUrl}}/Patient")
-                // log the outcome
-                .log("Patient created successfully: ${body}");
-
+                .to("jms:queue:HELLO.WORLD");
     }
 }

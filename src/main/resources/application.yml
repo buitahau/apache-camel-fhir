@@ -4,10 +4,7 @@ application:
   fhir:
     server-url: http://localhost:8080/fhir/hapi
     version: R4
-    input: classPath:data/hl7v2.patient
-
-fhirVersion: R4
-serverUrl: http://localhost:8080/fhir/hapi
+    input: /home/owt-hau/work/tmp?fileName=hl7v2.patient
 camel:
   component:
     servlet:
@@ -16,3 +13,8 @@ camel:
   dataformat:
     jackson:
       auto-discover-object-mapper: true
+spring:
+  activemq:
+    broker-url: tcp://localhost:61616
+    username: admin
+    password: admin
